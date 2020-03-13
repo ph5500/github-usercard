@@ -106,17 +106,18 @@ function cardCreator(object) {
   cardInfo.appendChild(gitLink);
   cardInfo.appendChild(followers);
   cardInfo.appendChild(following);
-  cardInfo.appendChild(bio);
+  profile.appendChild(bio);
 
 
   newImg.src = object.avatar_url;
+  newImg.alt = 'Github Profile Image';
   name.textContent = object.name;
-  username.textContent = object.username;
+  username.textContent = object.login;
 
 
   location.textContent = (`Location: ${object.location}`);
-  profile.textContent = (`Profile: ${gitLink}`);
-  gitLink.textcontent = object.html_url;
+  profile.textContent = (`Profile: ${object.html_url}`);
+  gitLink.setAttribute('href', object.html_url);
   followers.textContent = (`Followers: ${object.followers}`);
   following.textContent = (`Following: ${object.following}`);
   bio.textContent = (`Bio: ${object.bio}`);
@@ -125,4 +126,16 @@ function cardCreator(object) {
   return card;
 }
 
-let newCard = document.querySelector('.cards');
+let newCard = document.querySelector(".cards")
+
+
+function newCards(array) {
+  array.forEach(items => {
+    axios.get(`https://api.github.com/users/${item}`)
+      .then(response => {
+        let newGitProfile = cardCreator(response.object);
+
+        wholeThing.append(newGitProfile);
+      });
+  })
+}
