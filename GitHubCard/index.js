@@ -16,7 +16,7 @@ axios.get("https://api.github.com/users/ph5500")
   })
   .catch(error => {
 
-  })
+  });
 
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -97,17 +97,6 @@ function cardCreator(object) {
   name.classList.add("name");
   username.classList.add('username');
 
-  card.appendChild(newImg);
-  card.appendChild(cardInfo);
-  cardInfo.appendChild(name);
-  cardInfo.appendChild(username);
-  cardInfo.appendChild(profile);
-  cardInfo.appendChild(location);
-  cardInfo.appendChild(gitLink);
-  cardInfo.appendChild(followers);
-  cardInfo.appendChild(following);
-  profile.appendChild(bio);
-
 
   newImg.src = object.avatar_url;
   newImg.alt = 'Github Profile Image';
@@ -115,12 +104,27 @@ function cardCreator(object) {
   username.textContent = object.login;
 
 
-  location.textContent = (`Location: ${object.location}`);
-  profile.textContent = (`Profile: ${object.html_url}`);
+  location.textContent = `Location: ${object.location}`;
+  profile.textContent = `Profile: `;
+  gitLink.textContent = `${object.html_url}`;
   gitLink.setAttribute('href', object.html_url);
-  followers.textContent = (`Followers: ${object.followers}`);
-  following.textContent = (`Following: ${object.following}`);
-  bio.textContent = (`Bio: ${object.bio}`);
+  followers.textContent = `Followers: ${object.followers}`;
+  following.textContent = `Following: ${object.following}`;
+  bio.textContent = `Bio: ${object.bio}`;
+
+
+
+
+  card.appendChild(newImg);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(username);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  profile.appendChild(gitLink);
+  cardInfo.appendChild(bio);
 
 
   return card;
@@ -130,12 +134,24 @@ let newCard = document.querySelector(".cards")
 
 
 function newCards(array) {
-  array.forEach(items => {
+  array.forEach(item => {
     axios.get(`https://api.github.com/users/${item}`)
       .then(response => {
-        let newGitProfile = cardCreator(response.object);
+        let myCard = cardCreator(response.data);
 
-        wholeThing.append(newGitProfile);
+        newCard.append(myCard);
       });
   })
 }
+
+newCards(followersArray);
+
+// axios.get("https://api.github.com/users/ph5500")
+//   .then(response => {
+//     let myCard = cardCreator(response.data)
+//     newCard.appendChild(myCard)
+//     // console.log(myCard);
+//   })
+//   .catch(error => {
+
+//   })
